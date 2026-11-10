@@ -1,0 +1,3 @@
+# Preview: keep crawlers out until Walid approves launch.
+User-agent: *
+Disallow: /

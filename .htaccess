@@ -1,0 +1,28 @@
+# Hostinger (Apache/LiteSpeed). Safe defaults; review before go-live.
+Options -Indexes
+<Files "contact-config.php">
+  Require all denied
+</Files>
+<Files "contact-config.example.php">
+  Require all denied
+</Files>
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/css "access plus 1 month"
+  ExpiresByType application/javascript "access plus 1 month"
+  ExpiresByType image/webp "access plus 6 months"
+  ExpiresByType image/png "access plus 6 months"
+  ExpiresByType image/jpeg "access plus 6 months"
+  ExpiresByType font/woff2 "access plus 1 year"
+</IfModule>
+<IfModule mod_headers.c>
+  Header set X-Content-Type-Options "nosniff"
+  Header set Referrer-Policy "strict-origin-when-cross-origin"
+  Header set X-Frame-Options "SAMEORIGIN"
+</IfModule>
+AddType font/woff2 .woff2
+AddType application/manifest+json .webmanifest
+# HTTPS redirect: enable once SSL is active on the real domain
+# RewriteEngine On
+# RewriteCond %{HTTPS} off
+# RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
