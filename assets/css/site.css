@@ -476,3 +476,339 @@ h1 .draft, h2 .draft, h3 .draft { font-size: 0.6875rem; vertical-align: 0.35em; 
 
 /* Nav: 6 links + CTA must fit from 960px */
 @media (min-width: 60rem) and (max-width: 74.99rem) { .site-nav ul { gap: var(--space-4); } .site-nav a { letter-spacing: 0.08em; } .site-nav a { font-size: 0.78rem; } .site-nav .btn { padding: 0 var(--space-3); } }
+
+/* ---------- 14. Motion ----------
+   Transform and opacity only. Hidden states sit inside
+   prefers-reduced-motion: no-preference so content stays put
+   when motion is reduced or JS never runs. */
+@keyframes page-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes page-out {
+  to { opacity: 0; transform: translateY(8px); }
+}
+@keyframes rise-in {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes wipe-in {
+  from { opacity: 0; transform: scaleX(0); }
+  to { opacity: 1; transform: scaleX(1); }
+}
+@keyframes symbol-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes symbol-fade {
+  from { opacity: 0; }
+  to { opacity: 0.95; }
+}
+@keyframes sheen {
+  from { opacity: 0; transform: translateX(-180%); }
+  18% { opacity: 1; }
+  to { opacity: 0; transform: translateX(420%); }
+}
+@keyframes swoosh-sweep {
+  from { opacity: 1; transform: translateX(-120%); }
+  to { opacity: 1; transform: translateX(260%); }
+}
+@keyframes ripple {
+  from { opacity: 0.45; transform: scale(0); }
+  to { opacity: 0; transform: scale(2.4); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .js main,
+  .js .site-footer,
+  .js .preview-banner {
+    animation: page-in 160ms var(--ease) both;
+  }
+  .js.is-settled main,
+  .js.is-settled .site-footer,
+  .js.is-settled .preview-banner {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+  .js.is-leaving main,
+  .js.is-leaving .site-footer,
+  .js.is-leaving .preview-banner {
+    animation: page-out 240ms var(--ease) forwards;
+  }
+
+  .page-swoosh-clip {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 80;
+  }
+  .page-swoosh {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 3px;
+    width: 46%;
+    background: var(--orange);
+    opacity: 0;
+    transform: translateX(-120%);
+    pointer-events: none;
+  }
+  .page-swoosh.is-on { animation: swoosh-sweep 260ms var(--ease) forwards; }
+
+  .js .hero__lockup,
+  .js .page-hero h1 { animation: rise-in 380ms var(--ease) both; }
+  .js .hero__swoosh,
+  .js .hero__chevron,
+  .js .page-hero__swoosh {
+    transform-origin: left center;
+    animation: wipe-in 420ms var(--ease) 70ms both;
+  }
+  .js .hero__symbol,
+  .js .hero__symbol-m { animation: symbol-in 460ms var(--ease) 90ms both; }
+  .js .page-hero__symbol { animation: symbol-fade 460ms var(--ease) 90ms both; }
+  .js .hero__text > picture { position: relative; overflow: hidden; }
+  .js .hero__visual { overflow: hidden; }
+  .js .hero__visual::after,
+  .js .hero__text > picture::after {
+    content: "";
+    position: absolute;
+    top: -8%;
+    bottom: -8%;
+    width: 34%;
+    left: 0;
+    z-index: 3;
+    pointer-events: none;
+    background: linear-gradient(100deg, transparent 0%, rgb(236 238 240 / 0.15) 35%, rgb(255 255 255 / 0.82) 50%, rgb(236 238 240 / 0.2) 65%, transparent 100%);
+    transform: translateX(-180%);
+    animation: sheen 720ms var(--ease) 320ms 1 both;
+  }
+  .js.is-settled .hero__lockup,
+  .js.is-settled .hero__swoosh,
+  .js.is-settled .hero__chevron,
+  .js.is-settled .hero__symbol,
+  .js.is-settled .hero__symbol-m,
+  .js.is-settled .page-hero h1,
+  .js.is-settled .page-hero__swoosh {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+  .js.is-settled .page-hero__symbol { animation: none; opacity: 0.95; }
+  .js.is-settled .hero__visual::after,
+  .js.is-settled .hero__text > picture::after { animation: none; opacity: 0; }
+
+  .js main .card:not(.is-shown),
+  .js main .rate:not(.is-shown),
+  .js main .service:not(.is-shown),
+  .js main .row:not(.is-shown),
+  .js main .areas li:not(.is-shown),
+  .js main .steps li:not(.is-shown),
+  .js main h2:not(.is-shown),
+  .js main .statement:not(.is-shown) {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  .js main .card.is-in:not(.is-shown),
+  .js main .rate.is-in:not(.is-shown),
+  .js main .service.is-in:not(.is-shown),
+  .js main .row.is-in:not(.is-shown),
+  .js main .areas li.is-in:not(.is-shown),
+  .js main .steps li.is-in:not(.is-shown),
+  .js main h2.is-in:not(.is-shown),
+  .js main .statement.is-in:not(.is-shown) {
+    animation: rise-in 0.5s var(--ease) both;
+    animation-delay: var(--reveal-delay, 0ms);
+  }
+  .js main .card.is-shown,
+  .js main .rate.is-shown,
+  .js main .service.is-shown,
+  .js main .row.is-shown,
+  .js main .areas li.is-shown,
+  .js main .steps li.is-shown,
+  .js main h2.is-shown,
+  .js main .statement.is-shown {
+    opacity: 1;
+    transform: none;
+    transition: transform 0.2s var(--ease);
+  }
+
+  .card, .rate, .service, .areas li { position: relative; }
+  .card::before, .rate::before, .service::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: var(--orange);
+    transform: scaleY(0);
+    transform-origin: top center;
+    transition: transform 0.22s var(--ease);
+    pointer-events: none;
+    z-index: 1;
+  }
+  .btn {
+    position: relative;
+    isolation: isolate;
+    -webkit-tap-highlight-color: transparent;
+    transition: background-color 0.2s var(--ease), color 0.2s var(--ease), border-color 0.2s var(--ease), transform 0.18s var(--ease);
+  }
+  .btn::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: 0 10px 18px rgb(10 10 10 / 0.22);
+    opacity: 0;
+    transition: opacity 0.18s var(--ease);
+    z-index: -1;
+    pointer-events: none;
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn:hover::before { opacity: 1; }
+  .btn:active { transform: translateY(0) scale(0.97); }
+  .btn:disabled, .btn:disabled:hover, .btn:disabled:active { transform: none; }
+  .btn:disabled::before, .btn:disabled:hover::before { opacity: 0; }
+  .ripple-host {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    border-radius: inherit;
+    pointer-events: none;
+  }
+  .ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: rgb(255 255 255 / 0.42);
+    pointer-events: none;
+    transform: scale(0);
+    animation: ripple 420ms var(--ease) forwards;
+  }
+  .btn--ghost .ripple { background: rgb(215 110 43 / 0.32); }
+  .link-arrow, .site-footer a { transition: transform 0.16s var(--ease), color 0.16s var(--ease); }
+  .link-arrow:hover, .site-footer a:hover { transform: translateY(-1px); }
+  .link-arrow:active, .site-footer a:active { transform: scale(0.97); }
+  .site-footer a { display: inline-block; }
+
+  .site-nav a:not(.btn) { position: relative; }
+  .site-nav a:not(.btn)::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: auto;
+    bottom: 0.65rem;
+    width: 2.75rem;
+    height: 2px;
+    background: var(--orange);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.24s var(--ease);
+    pointer-events: none;
+  }
+  .site-nav a:not(.btn):hover::after,
+  .site-nav a:not(.btn):focus-visible::after,
+  .site-nav a[aria-current="page"]::after { right: auto; transform: scaleX(1); }
+  .site-nav a:not(.btn):active { transform: scale(0.97); }
+
+  .js .site-header::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 2px;
+    background: var(--orange);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.28s var(--ease);
+    pointer-events: none;
+    z-index: 3;
+  }
+  .js .site-header::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 14px;
+    pointer-events: none;
+    box-shadow: 0 12px 18px rgb(10 10 10 / 0.45);
+    opacity: 0;
+    transition: opacity 0.22s var(--ease);
+  }
+  .js .site-header.is-scrolled { background: var(--black); }
+  .js .site-header.is-scrolled::before { transform: scaleX(1); }
+  .js .site-header.is-scrolled::after { opacity: 1; }
+  .js .brand__symbol { transition: transform 0.22s var(--ease); transform-origin: left center; }
+  .js .site-header.is-scrolled .brand__symbol { transform: scale(0.9); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .card:hover::before, .rate:hover::before, .service:hover::before,
+  .js main .card.is-shown:hover::before,
+  .js main .rate.is-shown:hover::before,
+  .js main .service.is-shown:hover::before { transform: scaleY(1); }
+  .card, .rate, .service, .areas li { transition: transform 0.2s var(--ease); }
+  .row { transition: background-color 0.2s var(--ease), transform 0.2s var(--ease); }
+  .card:hover, .rate:hover, .service:hover, .areas li:hover, .row:hover,
+  .js main .card.is-shown:hover,
+  .js main .rate.is-shown:hover,
+  .js main .service.is-shown:hover,
+  .js main .areas li.is-shown:hover,
+  .js main .row.is-shown:hover { transform: translateY(-3px); }
+  .areas li:hover, .js main .areas li.is-shown:hover { box-shadow: inset 3px 0 0 var(--orange); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .card:active, .rate:active, .service:active, .areas li:active,
+  .js main .card.is-shown:active,
+  .js main .rate.is-shown:active,
+  .js main .service.is-shown:active,
+  .js main .areas li.is-shown:active {
+    transform: translateY(0) scale(0.985);
+  }
+  .card:active::before, .rate:active::before, .service:active::before { transform: scaleY(1); }
+}
+@media (prefers-reduced-motion: no-preference) and (hover: none) and (pointer: coarse) {
+  .card:hover, .rate:hover, .service:hover, .areas li:hover, .row:hover,
+  .js main .card.is-shown:hover,
+  .js main .rate.is-shown:hover,
+  .js main .service.is-shown:hover,
+  .js main .areas li.is-shown:hover,
+  .js main .row.is-shown:hover { transform: none; box-shadow: none; }
+  .card:hover::before, .rate:hover::before, .service:hover::before,
+  .js main .card.is-shown:hover::before,
+  .js main .rate.is-shown:hover::before,
+  .js main .service.is-shown:hover::before { transform: scaleY(0); }
+}
+
+@media (prefers-reduced-motion: no-preference) and (max-width: 59.99rem) {
+  .js .site-header { isolation: isolate; }
+  .js .site-nav {
+    display: block;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    z-index: 5;
+    background: var(--black);
+    padding-inline: var(--gutter);
+    border-bottom: 1px solid var(--line-dark);
+    opacity: 0;
+    transform: translateY(-10px);
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.22s var(--ease), transform 0.22s var(--ease), visibility 0s linear 0.22s;
+  }
+  .js .site-nav.is-open {
+    opacity: 1;
+    transform: none;
+    visibility: visible;
+    pointer-events: auto;
+    transition: opacity 0.22s var(--ease), transform 0.22s var(--ease), visibility 0s;
+  }
+}
+@media (prefers-reduced-motion: no-preference) and (min-width: 60rem) {
+  .site-nav a:not(.btn)::after { bottom: -2px; width: 100%; }
+}
