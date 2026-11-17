@@ -4,11 +4,14 @@
    ../../design-system.md (website/design-system.md).
    ===================================================================== */
 
-/* ---------- 1. Fonts (self-hosted, SIL Open Font Licence) ---------- */
+/* ---------- 1. Fonts (self-hosted, SIL Open Font Licence) ----------
+   Norwester (Jamie Wilson, OFL) is the display face for the wordmark
+   and headings. Inter stays the body face. Two families only. */
 @font-face {
-  font-family: "Montserrat";
-  src: url("../fonts/montserrat-latin-var.woff2") format("woff2");
-  font-weight: 500 800;
+  font-family: "Norwester";
+  src: url("../fonts/norwester.woff2") format("woff2"),
+       url("../fonts/norwester.woff") format("woff");
+  font-weight: 400 800;
   font-style: normal;
   font-display: swap;
 }
@@ -42,7 +45,7 @@
   --metal: linear-gradient(180deg, var(--silver-hi) 0%, var(--silver) 48%, var(--silver-lo) 100%);
 
   /* Type */
-  --font-display: "Montserrat", "Avenir Next", "Segoe UI", Arial, sans-serif;
+  --font-display: "Norwester", "Arial Narrow", Arial, sans-serif;
   --font-body: "Inter", "Segoe UI", Roboto, Arial, sans-serif;
 
   --step--2: 0.75rem;                                    /* 12 caps labels */
@@ -103,7 +106,7 @@ img, svg, picture { display: block; max-width: 100%; height: auto; }
 a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 0.2em; }
 a:hover { text-decoration-color: var(--orange); }
 :focus-visible { outline: none; box-shadow: var(--focus); border-radius: var(--radius-s); }
-h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 800; line-height: var(--leading-snug); margin: 0 0 var(--space-4); letter-spacing: -0.01em; }
+h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 800; font-synthesis: none; line-height: var(--leading-snug); margin: 0 0 var(--space-4); letter-spacing: -0.01em; }
 h1 { font-size: var(--step-4); line-height: var(--leading-tight); letter-spacing: -0.02em; }
 h2 { font-size: var(--step-3); line-height: 1.1; }
 h3 { font-size: var(--step-2); font-weight: 700; }
@@ -149,7 +152,7 @@ ul, ol { margin: 0; padding: 0; }
 .accent { color: var(--orange); }      /* large text (>= 24px, or 19px bold) on white, any size on black */
 
 /* ---------- 6. Brand lockups ---------- */
-.lockup { font-family: var(--font-display); text-transform: uppercase; line-height: 1; display: inline-grid; justify-items: center; margin: 0; }
+.lockup { font-family: var(--font-display); font-synthesis: none; text-transform: uppercase; line-height: 1; display: inline-grid; justify-items: center; margin: 0; }
 .lockup__oryx { font-weight: 800; font-size: var(--step-5); letter-spacing: 0.02em; line-height: 0.9; }
 .lockup__mainland { font-weight: 700; color: var(--orange); font-size: calc(var(--step-5) * 0.44); letter-spacing: 0.075em; line-height: 1.1; margin-top: 0.1em; margin-right: -0.075em; }
 .lockup__inc { display: flex; align-items: center; gap: 0.7em; font-weight: 600; font-size: max(0.8125rem, calc(var(--step-5) * 0.17)); letter-spacing: 0.16em; margin-top: 0.4em; }
@@ -157,7 +160,7 @@ ul, ol { margin: 0; padding: 0; }
 .lockup--left { justify-items: start; }
 
 /* Header brand: "Oryx Mainland Logistics" */
-.brand { display: inline-flex; align-items: center; gap: var(--space-3); text-decoration: none; color: var(--on-dark); font-family: var(--font-display); text-transform: uppercase; line-height: 1; }
+.brand { display: inline-flex; align-items: center; gap: var(--space-3); text-decoration: none; color: var(--on-dark); font-family: var(--font-display); font-synthesis: none; text-transform: uppercase; line-height: 1; }
 .brand__symbol { width: auto; height: 2.75rem; }
 .brand__text { display: grid; grid-template-columns: auto auto; column-gap: 0.55rem; align-items: center; }
 .brand__oryx { grid-row: span 2; font-weight: 800; font-size: 1.75rem; letter-spacing: 0.02em; }
